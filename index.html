@@ -200,6 +200,11 @@
     width:9px; height:9px; border-radius:2px; flex:none;
   }
   .platform-dots .pdot.outline{background:transparent !important; border:1.3px solid var(--s-notstarted);}
+  .published-count{
+    align-self:flex-start; margin-top:6px; font-size:10.5px; font-weight:700;
+    color:var(--muted); line-height:1;
+  }
+  .published-count.complete{color:var(--s-published);}
 
   /* ---------- SIDE: legend + summary ---------- */
   .side-title{
@@ -333,17 +338,11 @@
       </div>
 
       <div class="panel side-panel">
-        <div class="side-title">Posting Schedule</div>
-        <p class="sheet-note" style="margin-bottom:10px;">Manila time — <span id="scheduleClientName">this client's</span> daily publish times.</p>
+        <div class="side-title">Posting Schedule <span id="dailyPostCount" style="font-size:12px;color:var(--muted);font-weight:500;margin-left:6px;"></span></div>
+        <p class="sheet-note" style="margin-bottom:10px;">Client local time — <span id="scheduleClientName">this client's</span> standard daily publish times.</p>
         <div class="schedule-list" id="scheduleList"></div>
       </div>
-
-      <div class="panel side-panel">
-        <div class="side-title">Full Planner</div>
-        <p class="sheet-note">Open the master spreadsheet for <span id="sheetClientName">this client</span> to see every detail behind these statuses.</p>
-        <a class="btn btn-gold sheet-link" id="sheetLink" href="#" target="_blank" rel="noopener">Open Excel Sheet ↗</a>
-      </div>
-    </aside>
+</aside>
   </section>
 </main>
 
@@ -388,9 +387,8 @@ function clientDocRef(clientIdx){
 
 /* ============ DATA ============ */
 const CLIENTS = [
-  "Charles and Crew","Mountain Man Painting","Nebraska Elite Painting","Three Pillars Painting",
-  "Kranenburg","ABE Painting","Neighborhood Painting","Dylan's Couch","Taro Painting",
-  "Colour Your Life","Gerardine Painting","Rocket Painter"
+  "Charles and Crew","Mountain Man Painting","Three Pillars Painting",
+  "Kranenburg","ABE Painting","Neighborhood Painting","Taro Painting",
 ];
 
 const STATUSES = [
@@ -425,110 +423,36 @@ const PLATFORM_COLORS = {
    transcribed from each client's scheduling sheet. */
 const SCHEDULE = {
   "Charles and Crew": [
-    {platform:"Pinterest", time:"10:00 PM"},
-    {platform:"LinkedIn (Business Page)", time:"10:00 PM"},
-    {platform:"LinkedIn (Personal)", time:"10:00 PM"},
-    {platform:"Yelp", time:"10:00 PM"},
-    {platform:"GBP", time:"11:00 PM"},
-    {platform:"Instagram", time:"12:00 AM"},
-    {platform:"Facebook", time:"2:00 AM"},
-    {platform:"Nextdoor", time:"5:00 AM"}
+    {platform:"Facebook", time:"12:00 PM"},{platform:"Instagram", time:"1:00 PM"},{platform:"Pinterest", time:"10:00 AM"},{platform:"LinkedIn", time:"11:00 AM"},{platform:"Nextdoor", time:"5:30 PM"},{platform:"Yelp", time:"11:00 AM"},{platform:"GBP", time:"11:00 AM"}
   ],
   "Mountain Man Painting": [
-    {platform:"Pinterest", time:"10:00 AM"},
-    {platform:"LinkedIn", time:"10:15 PM"},
-    {platform:"Yelp", time:"11:15 PM"},
-    {platform:"GBP", time:"10:45 PM"},
-    {platform:"Instagram", time:"2:00 AM"},
-    {platform:"Facebook", time:"11:00 PM"},
-    {platform:"Nextdoor", time:"10:15 PM"}
-  ],
-  "Nebraska Elite Painting": [
-    {platform:"Pinterest", time:"12:30 AM"},
-    {platform:"LinkedIn (Business Page)", time:"3:00 AM"},
-    {platform:"LinkedIn (Personal)", time:"3:00 AM"},
-    {platform:"Yelp", time:"1:00 AM"},
-    {platform:"GBP", time:"12:45 AM"},
-    {platform:"Instagram", time:"4:30 AM"},
-    {platform:"Facebook", time:"5:30 AM"},
-    {platform:"Nextdoor", time:"3:00 AM"}
+    {platform:"Facebook", time:"9:00 AM"},{platform:"Instagram", time:"11:00 AM"},{platform:"Pinterest", time:"10:00 AM"},{platform:"LinkedIn", time:"11:30 AM"},{platform:"Nextdoor", time:"9:30 AM"},{platform:"Yelp", time:"10:30 AM"},{platform:"GBP", time:"12:00 PM"}
   ],
   "Three Pillars Painting": [
-    {platform:"Pinterest", time:"8:30 PM"},
-    {platform:"LinkedIn", time:"8:45 PM"},
-    {platform:"Yelp", time:"9:00 PM"},
-    {platform:"GBP", time:"9:30 PM"},
-    {platform:"Instagram", time:"10:30 PM"},
-    {platform:"Facebook", time:"12:30 AM"},
-    {platform:"Nextdoor", time:"2:30 AM"}
+    {platform:"Facebook", time:"12:00 PM"},{platform:"Instagram", time:"1:00 PM"},{platform:"Pinterest", time:"10:00 AM"},{platform:"LinkedIn", time:"11:30 AM"},{platform:"Nextdoor", time:"5:30 PM"},{platform:"Yelp", time:"12:00 PM"},{platform:"GBP", time:"12:00 PM"}
   ],
   "Kranenburg": [
-    {platform:"Pinterest", time:"9:00 PM"},
-    {platform:"LinkedIn (Business Page)", time:"9:00 PM"},
-    {platform:"LinkedIn (Personal)", time:"9:00 PM"},
-    {platform:"Yelp", time:"9:00 PM"},
-    {platform:"GBP", time:"10:00 PM"},
-    {platform:"Instagram", time:"11:00 PM"},
-    {platform:"Facebook", time:"1:00 AM"},
-    {platform:"Nextdoor", time:"3:00 AM"}
+    {platform:"Facebook", time:"9:00 AM"},{platform:"Instagram", time:"11:00 AM"},{platform:"Pinterest", time:"10:00 AM"},{platform:"LinkedIn", time:"11:00 AM"},{platform:"Nextdoor", time:"9:00 AM"},{platform:"Yelp", time:"10:00 AM"},{platform:"GBP", time:"9:00 AM"}
   ],
   "ABE Painting": [
-    {platform:"Pinterest", time:"9:00 AM"},
-    {platform:"LinkedIn", time:"9:15 PM"},
-    {platform:"Yelp", time:"11:00 PM"},
-    {platform:"GBP", time:"11:15 PM"},
-    {platform:"Instagram", time:"10:00 PM"},
-    {platform:"Facebook", time:"9:00 PM"},
-    {platform:"Nextdoor", time:"9:30 PM"}
+    {platform:"Facebook", time:"9:00 AM"},{platform:"Instagram", time:"8:00 AM"},{platform:"Pinterest", time:"11:00 AM"},{platform:"LinkedIn", time:"9:00 AM"},{platform:"Nextdoor", time:"9:00 AM"},{platform:"Yelp", time:"10:00 AM"},{platform:"GBP", time:"10:00 AM"}
   ],
   "Neighborhood Painting": [
-    {platform:"Pinterest", time:"9:30 PM"},
-    {platform:"LinkedIn", time:"8:30 PM"},
-    {platform:"Yelp", time:"1:00 AM"},
-    {platform:"GBP", time:"10:30 PM"},
-    {platform:"Instagram", time:"1:00 AM"},
-    {platform:"Facebook", time:"10:30 PM"},
-    {platform:"Nextdoor", time:"8:30 PM"}
+    {platform:"Facebook", time:"9:00 AM"},{platform:"Instagram", time:"11:00 AM"},{platform:"Pinterest", time:"12:00 PM"},{platform:"LinkedIn", time:"10:00 AM"},{platform:"Nextdoor", time:"9:00 AM"},{platform:"Yelp", time:"10:00 AM"},{platform:"GBP", time:"8:00 AM"}
   ],
-  "Dylan's Couch": [],
   "Taro Painting": [
-    {platform:"Pinterest", time:"10:30 PM"},
-    {platform:"LinkedIn", time:"10:30 PM"},
-    {platform:"Yelp", time:"1:15 AM"},
-    {platform:"GBP", time:"11:30 PM"},
-    {platform:"Instagram", time:"12:45 AM"},
-    {platform:"Facebook", time:"11:30 PM"},
-    {platform:"Nextdoor", time:"10:15 PM"}
-  ],
-  "Colour Your Life": [
-    {platform:"Pinterest", time:"7:00 AM"},
-    {platform:"LinkedIn (Personal)", time:"7:00 PM"},
-    {platform:"LinkedIn", time:"7:00 PM"},
-    {platform:"Yelp", time:"11:45 PM"},
-    {platform:"GBP", time:"8:00 PM"},
-    {platform:"Instagram", time:"11:00 PM"},
-    {platform:"Facebook", time:"9:15 PM"},
-    {platform:"Nextdoor", time:"7:15 PM"}
-  ],
-  "Gerardine Painting": [
-    {platform:"Pinterest", time:"10:30 PM"},
-    {platform:"LinkedIn (Business Page)", time:"8:45 PM"},
-    {platform:"LinkedIn (Personal)", time:"8:45 PM"},
-    {platform:"Yelp", time:"12:30 AM"},
-    {platform:"GBP", time:"12:00 AM"},
-    {platform:"Instagram", time:"12:30 AM"},
-    {platform:"Facebook", time:"3:00 AM"},
-    {platform:"Nextdoor", time:"10:00 PM"}
-  ],
-  "Rocket Painter": [
-    {platform:"Pinterest", time:"10:00 PM"},
-    {platform:"LinkedIn", time:"10:00 PM"},
-    {platform:"Yelp", time:"1:15 AM"},
-    {platform:"GBP", time:"11:00 PM"},
-    {platform:"Instagram", time:"12:00 AM"},
-    {platform:"Facebook", time:"2:00 AM"},
-    {platform:"Nextdoor", time:"5:00 AM"}
+    {platform:"Facebook", time:"12:00 PM"},{platform:"Instagram", time:"1:00 PM"},{platform:"Pinterest", time:"10:00 AM"},{platform:"LinkedIn", time:"11:00 AM"},{platform:"Nextdoor", time:"5:00 PM"},{platform:"Yelp", time:"11:00 AM"},{platform:"GBP", time:"12:00 PM"}
   ]
+};
+
+const CLIENT_TIMEZONES = {
+  "Charles and Crew":"Eastern Time (ET)",
+  "Mountain Man Painting":"Mountain Time (MT)",
+  "Three Pillars Painting":"Central Time (CT)",
+  "Kranenburg":"Eastern Time (ET)",
+  "ABE Painting":"Central Time (CT)",
+  "Neighborhood Painting":"Central Time (CT)",
+  "Taro Painting":"Pacific Time (PT)"
 };
 
 const TODAY = new Date(2026,6,17); // July 17, 2026
@@ -662,35 +586,28 @@ const PLANNER_LINK_DEFAULT = "https://docs.google.com/spreadsheets/d/1td4eyTibyn
 const CLIENT_LINKS = [
   "https://docs.google.com/spreadsheets/d/1Lpmt03x-_YBGDpaSNHlRFQdVsULu-WnH-Szy-kw-MIM/edit?usp=sharing",  // Charles and Crew
   "https://docs.google.com/spreadsheets/d/1-YQnRZhQAQlzClAkefhdlmyLGN3Z7U8BnI1kWcbySwo/edit?usp=sharing",  // Mountain Man Painting
-  "https://docs.google.com/spreadsheets/d/1tl6PcQqQhQX1hR5Acgbky_C5ff7hIDxnnT4pnxyTCZk/edit?usp=sharing",  // Nebraska Elite Painting
   "https://docs.google.com/spreadsheets/d/1082H7XWhGiQZTjku20tPHJN0ux9JxDLV0A-Mw7TSK5g/edit?usp=sharing",  // Three Pillars Painting
   "https://docs.google.com/spreadsheets/d/1CVpLqzifBiqZTLr3zgDI08FbmDdSmouPQu_knbU2YrU/edit?usp=sharing",  // Kranenburg
   "https://docs.google.com/spreadsheets/d/1SDSXiMOcxUE4iJ6d3nrNl43I2mcMtvSDGwHj1VhrARo/edit?usp=sharing",  // ABE Painting
   "https://docs.google.com/spreadsheets/d/1RlpmJMuDzOHn3guJNkVzl6mUFMkkLGLISen2c_wbOGA/edit?usp=sharing",  // Neighborhood Painting
-  "https://docs.google.com/spreadsheets/d/1JgijZmavsG57LXx8jyMp9wrFA4MbXSEpFgv8zx0UwE8/edit?usp=sharing",  // Dylan's Couch
   "https://docs.google.com/spreadsheets/d/1WUur0w1B2wxFeQN_HwKwxYkrR2cOX2wp7kIDi6P6h4w/edit?usp=sharing",  // Taro Painting
-  "https://docs.google.com/spreadsheets/d/1tKD1RytRihUlM83LtQzU9t4CZ7JmKseETBZEHnwy_1I/edit?usp=sharing",  // Colour Your Life
-  "https://docs.google.com/spreadsheets/d/1neAy1lQfTC_6ogBIGghGht-phdLM6lFQiKj_Fo0GNvw/edit?usp=sharing",  // Gerardine Painting
-  "https://docs.google.com/spreadsheets/d/1SU6LCBSZVcdKWeU2IygVZY_3xGyoM6fAqHof0jks34o/edit?usp=sharing"   // Rocket Painter
 ];
 
-const sheetLinkBtn = document.getElementById('sheetLink');
-const sheetClientNameEl = document.getElementById('sheetClientName');
 const footerLink = document.getElementById('footerLink');
 
 function updatePlannerLink(){
   const link = CLIENT_LINKS[state.clientIdx] || PLANNER_LINK_DEFAULT;
-  sheetLinkBtn.href = link;
   footerLink.href = link;
-  sheetClientNameEl.textContent = CLIENTS[state.clientIdx];
 }
 
 const scheduleListEl = document.getElementById('scheduleList');
 const scheduleClientNameEl = document.getElementById('scheduleClientName');
+const dailyPostCountEl = document.getElementById('dailyPostCount');
 function renderSchedule(){
   const client = CLIENTS[state.clientIdx];
   scheduleClientNameEl.textContent = client + "'s";
   const rows = SCHEDULE[client] || [];
+  if(dailyPostCountEl) dailyPostCountEl.textContent = `Target: ${rows.length} posts/day · ${CLIENT_TIMEZONES[client] || 'Client local time'}`;
   scheduleListEl.innerHTML = '';
   if(rows.length === 0){
     scheduleListEl.innerHTML = '<div class="schedule-empty">Schedule not added yet.</div>';
@@ -789,10 +706,12 @@ function render(){
 
     const dots = document.createElement('div');
     dots.className = 'platform-dots';
+    let publishedCount = 0;
     PLATFORMS.forEach(platform=>{
       const key = getStatus(state.clientIdx, dateObj, platform);
       const s = STATUS_BY_KEY[key];
       counts[key]++;
+      if(key === 'published') publishedCount++;
       const dot = document.createElement('div');
       dot.className = 'pdot' + (s.outline ? ' outline':'');
       dot.title = `${platform}: ${s.label}`;
@@ -800,8 +719,14 @@ function render(){
       dots.appendChild(dot);
     });
 
+    const publishedLabel = document.createElement('div');
+    publishedLabel.className = 'published-count' + (publishedCount === PLATFORMS.length ? ' complete' : '');
+    publishedLabel.textContent = `${publishedCount} published`;
+    publishedLabel.title = `${publishedCount} of ${PLATFORMS.length} scheduled posts are published`;
+
     cell.appendChild(num);
     cell.appendChild(dots);
+    cell.appendChild(publishedLabel);
     cell.addEventListener('click', ()=> openModal(dateObj));
     calGrid.appendChild(cell);
   }
@@ -821,9 +746,9 @@ function render(){
     if(el) el.textContent = counts[s.key];
   });
 
-  // donut
+  // Monthly total = Published posts only. Any status other than Published counts as 0.
   const total = daysInMonth * PLATFORMS.length;
-  totalPostsEl.textContent = total - counts.notstarted; // "posts" = anything actively in the pipeline
+  totalPostsEl.textContent = counts.published;
   let acc = 0;
   const stops = [];
   STATUSES.forEach(s=>{
